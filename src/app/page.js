@@ -6,23 +6,10 @@ import { TodoTitle } from "./components/TodoTitle"
 
 
 const defaultTodos = [
-  { text: 'Cook dinner', completed: true },
-  { text: 'Study', completed: false },
-  { text: 'Destroy furniture', completed: true },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-  { text: 'Eat', completed: false },
-
-
+  { title:'Cooking', text: 'Cook dinner', completed: true },
+  { title:'title', text: 'Study', completed: false },
+  { title:'title', text: 'Destroy furniture', completed: true },
+  { title:'title', text: 'Eat', completed: false },
 ]
 
 export default function Home() {
@@ -38,6 +25,7 @@ export default function Home() {
           <TodoItem
             key={todo.text}
             text={todo.text}
+            title={todo.title}
             completed={todo.completed }
           />
         ))}
