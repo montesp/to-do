@@ -27,6 +27,29 @@ function TodosPage() {
   ).length;
   const totalTodos = searchedTodos.length;
 
+  /**
+   * Complete todo
+   * @param {*} title
+   */
+  const completeTodo = (title) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.title === title) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
+
+  /**
+   * Delete specific todo
+   * @param {*} title
+   */
+  const onDeleted = (title) => {
+    const newTodos = todos.filter((todo) => todo.title !== title);
+    setTodos(newTodos);
+  };
+
   return (
     <>
       <TodoTitle completed={completedTodos} total={totalTodos} />
@@ -34,12 +57,12 @@ function TodosPage() {
       <TodoList>
         {searchedTodos.map((todo) => (
           <TodoItem
-            todos={todos}
-            setTodos={setTodos}
             key={todo.title}
             text={todo.text}
             title={todo.title}
             completed={todo.completed}
+            onCompleted={completeTodo}
+            onDeleted={onDeleted}
           />
         ))}
       </TodoList>

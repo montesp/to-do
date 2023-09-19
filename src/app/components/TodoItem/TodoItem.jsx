@@ -2,16 +2,16 @@
 import React, { useState } from "react";
 import { FaX, FaCheck } from "react-icons/fa6";
 
-function TodoItem({ text, title, completed, todos, setTodos }) {
-  const changeCompleted = () => {
-    const newTodos = todos.map((todo) => {
-      if (todo.title === title) {
-        todo.completed = !todo.completed;
-      }
-      return todo;
-    });
-    setTodos(newTodos);
-  };
+function TodoItem({ text, title, completed, onCompleted, onDeleted }) {
+  // const changeCompleted = () => {
+  //   const newTodos = todos.map((todo) => {
+  //     if (todo.title === title) {
+  //       todo.completed = !todo.completed;
+  //     }
+  //     return todo;
+  //   });
+  //   setTodos(newTodos);
+  // };
 
   const deleteTodo = () => {
     const newTodos = todos.filter((todo) => todo.title !== title);
@@ -23,7 +23,7 @@ function TodoItem({ text, title, completed, todos, setTodos }) {
       <input
         type="checkbox"
         checked={completed}
-        onChange={() => changeCompleted()}
+        onChange={() => onCompleted(title)}
         className={`w-5 h-5 mt-2 rounded-3xl hover:text-green-600 cursor-pointer`}
       ></input>
       <div className="flex flex-col pl-2">
@@ -37,7 +37,7 @@ function TodoItem({ text, title, completed, todos, setTodos }) {
         </p>
       </div>
       <FaX
-        onClick={() => deleteTodo()}
+        onClick={() => onDeleted(title)}
         className="absolute right-4 top-4 w-4 h-4 font-bold  hover:text-red-500"
       />
     </li>
