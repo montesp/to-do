@@ -54,6 +54,18 @@ function TodosPage() {
     <>
       <TodoTitle completed={completedTodos} total={totalTodos} />
       <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+      {completedTodos === totalTodos && totalTodos !== 0 && (
+        <p className="text-center text-2xl font-bold mb-2">
+          Todos are completed
+        </p>
+      )}
+
+      {totalTodos === 0 && (
+        <p className="text-center font-bold text-2xl mb-2">
+          Start creating todos
+        </p>
+      )}
+
       <TodoList>
         {searchedTodos.map((todo) => (
           <TodoItem
@@ -66,6 +78,7 @@ function TodosPage() {
           />
         ))}
       </TodoList>
+
       <CreateTodoButton />
     </>
   );
