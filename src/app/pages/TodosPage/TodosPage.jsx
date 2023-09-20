@@ -4,28 +4,13 @@ import { TodoItem } from "@/app/components/TodoItem/TodoItem";
 import { TodoList } from "@/app/components/TodoList/TodoList";
 import { TodoSearch } from "@/app/components/TodoSearch/TodoSearch";
 import { TodoTitle } from "@/app/components/TodoTitle/TodoTitle";
+import { useLocalStorage } from "@/app/hooks/useLocalStorage";
 import React, { useState } from "react";
 
-const defaultTodos = [
-  { title: "Cooking", text: "Cook dinner", completed: true },
-  { title: "Study", text: "Complete react courses", completed: true },
-  { title: "Buy", text: "Buy furniture for kitchen", completed: false },
-  { title: "Eat", text: "Eat healtly", completed: false },
-  { title: "title", text: "Study", completed: true },
-];
-
 function TodosPage() {
-  let localTodos = localStorage.getItem("TODOS");
-
-  if (!localTodos) {
-    localStorage.setItem("TODOS", JSON.stringify([]));
-    localTodos = localStorage.getItem("TODOS");
-  }
-
-  const parsedTodos = JSON.parse(localTodos);
-
   const [searchValue, setSearchValue] = useState("");
-  const [todos, setTodos] = useState(parsedTodos);
+  const [parsedTodos, todos, saveTodos, completeTodo, deleteTodo] =
+    useLocalStorage("TODOS_V1", []);
   const searchedTodos = todos.filter(
     (todo) =>
       todo.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -35,35 +20,6 @@ function TodosPage() {
     (todo) => !!todo.completed
   ).length;
   const totalTodos = searchedTodos.length;
-
-  const saveTodos = (newTodos) => {
-    localStorage.setItem("TODOS", JSON.stringify(newTodos));
-    setTodos(newTodos);
-  };
-
-  /**
-   * Complete todo
-   * @param {*} title
-   */
-  const completeTodo = (title) => {
-    const newTodos = todos.map((todo) => {
-      if (todo.title === title) {
-        todo.completed = !todo.completed;
-      }
-      return todo;
-    });
-    saveTodos(newTodos);
-  };
-
-  /**
-   * Delete specific todo
-   * @param {*} title
-   */
-  const onDeleted = (title) => {
-    const newTodos = todos.filter((todo) => todo.title !== title);
-    saveTodos(newTodos);
-  };
-
   return (
     <>
       <TodoTitle completed={completedTodos} total={totalTodos} />
@@ -88,11 +44,10 @@ function TodosPage() {
             title={todo.title}
             completed={todo.completed}
             onCompleted={completeTodo}
-            onDeleted={onDeleted}
+            onDeleted={deleteTodo}
           />
         ))}
       </TodoList>
-
       <CreateTodoButton />
     </>
   );
