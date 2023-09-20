@@ -15,8 +15,17 @@ const defaultTodos = [
 ];
 
 function TodosPage() {
+  let localTodos = localStorage.getItem("TODOS");
+
+  if (!localTodos) {
+    localStorage.setItem("TODOS", JSON.stringify([]));
+    localTodos = localStorage.getItem("TODOS");
+  }
+
+  const parsedTodos = JSON.parse(localTodos);
+
   const [searchValue, setSearchValue] = useState("");
-  const [todos, setTodos] = useState(defaultTodos);
+  const [todos, setTodos] = useState(parsedTodos);
   const searchedTodos = todos.filter(
     (todo) =>
       todo.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -26,6 +35,11 @@ function TodosPage() {
     (todo) => !!todo.completed
   ).length;
   const totalTodos = searchedTodos.length;
+
+  const saveTodos = (newTodos) => {
+    localStorage.setItem("TODOS", JSON.stringify(newTodos));
+    setTodos(newTodos);
+  };
 
   /**
    * Complete todo
@@ -38,7 +52,7 @@ function TodosPage() {
       }
       return todo;
     });
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   /**
@@ -47,7 +61,7 @@ function TodosPage() {
    */
   const onDeleted = (title) => {
     const newTodos = todos.filter((todo) => todo.title !== title);
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (

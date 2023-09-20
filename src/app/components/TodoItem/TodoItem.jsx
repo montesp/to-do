@@ -3,16 +3,6 @@ import React, { useState } from "react";
 import { FaX, FaCheck } from "react-icons/fa6";
 
 function TodoItem({ text, title, completed, onCompleted, onDeleted }) {
-  // const changeCompleted = () => {
-  //   const newTodos = todos.map((todo) => {
-  //     if (todo.title === title) {
-  //       todo.completed = !todo.completed;
-  //     }
-  //     return todo;
-  //   });
-  //   setTodos(newTodos);
-  // };
-
   const deleteTodo = () => {
     const newTodos = todos.filter((todo) => todo.title !== title);
     setTodos(newTodos);
