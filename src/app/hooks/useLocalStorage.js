@@ -1,11 +1,11 @@
 import { useState } from "react";
-const defaultTodos = [
-  { title: "Cooking", text: "Cook dinner", completed: true },
-  { title: "Study", text: "Complete react courses", completed: true },
-  { title: "Buy", text: "Buy furniture for kitchen", completed: false },
-  { title: "Eat", text: "Eat healtly", completed: false },
-  { title: "title", text: "Study", completed: true },
-];
+// const defaultTodos = [
+//   { title: "Cooking", text: "Cook dinner", completed: true },
+//   { title: "Study", text: "Complete react courses", completed: true },
+//   { title: "Buy", text: "Buy furniture for kitchen", completed: false },
+//   { title: "Eat", text: "Eat healtly", completed: false },
+//   { title: "title", text: "Study", completed: true },
+// ];
 
 function useLocalStorage(itemName, initialValue) {
   let localItems = localStorage.getItem(itemName);
