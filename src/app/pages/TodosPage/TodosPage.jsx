@@ -9,8 +9,14 @@ import React, { useState } from "react";
 
 function TodosPage() {
   const [searchValue, setSearchValue] = useState("");
-  const [parsedTodos, todos, saveTodos, completeTodo, deleteTodo] =
-    useLocalStorage("TODOS_V1", []);
+  const {
+    items: todos,
+    saveItems: saveTodos,
+    completeItem: completeTodo,
+    deleteItem: deleteTodo,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
   const searchedTodos = todos.filter(
     (todo) =>
       todo.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -24,29 +30,28 @@ function TodosPage() {
     <>
       <TodoTitle completed={completedTodos} total={totalTodos} />
       <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
-      {completedTodos === totalTodos && totalTodos !== 0 && (
-        <p className="text-center text-2xl font-bold mb-2">
-          Todos are completed
-        </p>
+      {completedTodos === totalTodos && totalTodos !== 0 && !error && (
+        <p className="text-xl font-medium mb-2">Todos are completed</p>
       )}
-
-      {totalTodos === 0 && (
-        <p className="text-center font-bold text-2xl mb-2">
-          Start creating todos
-        </p>
+      {!loading && totalTodos && !error === 0 && (
+        <p className="font-medium text-xl mb-2">Start creating todos</p>
       )}
-
+      {error && <p className="font-medium text-xl mb-2">Error loading todos</p>}
       <TodoList>
-        {searchedTodos.map((todo) => (
-          <TodoItem
-            key={todo.title}
-            text={todo.text}
-            title={todo.title}
-            completed={todo.completed}
-            onCompleted={completeTodo}
-            onDeleted={deleteTodo}
-          />
-        ))}
+        {loading ? (
+          <p className="text-xl font-medium mb-2">Loading...</p>
+        ) : (
+          searchedTodos.map((todo) => (
+            <TodoItem
+              key={todo.title}
+              text={todo.text}
+              title={todo.title}
+              completed={todo.completed}
+              onCompleted={completeTodo}
+              onDeleted={deleteTodo}
+            />
+          ))
+        )}
       </TodoList>
       <CreateTodoButton />
     </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // const defaultTodos = [
 //   { title: "Cooking", text: "Cook dinner", completed: true },
 //   { title: "Study", text: "Complete react courses", completed: true },
@@ -8,13 +8,32 @@ import { useState } from "react";
 // ];
 
 function useLocalStorage(itemName, initialValue) {
-  let localItems = localStorage.getItem(itemName);
-  if (!localItems) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    localItems = localStorage.getItem(itemName);
-  }
-  const parsedItem = JSON.parse(localItems);
-  const [items, setItems] = useState(parsedItem);
+  // localStorage.setItem("TODOS_V1", JSON.stringify(defaultTodos));
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [items, setItems] = useState(initialValue);
+
+  useEffect(() => {
+    setTimeout(() => {
+      try {
+        const localItems = localStorage.getItem(itemName);
+        let parsedItem;
+        if (!localItems) {
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = localStorage.getItem(itemName);
+        } else {
+          parsedItem = JSON.parse(localItems);
+        }
+
+        setItems(parsedItem);
+      } catch (error) {
+        setLoading(false);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
+  }, []);
 
   const saveItems = (newItem) => {
     localStorage.setItem(itemName, JSON.stringify(newItem));
@@ -36,7 +55,7 @@ function useLocalStorage(itemName, initialValue) {
     saveItems(newItems);
   };
 
-  return [parsedItem, items, saveItems, completeItem, deleteItem];
+  return { items, saveItems, completeItem, deleteItem, loading, error };
 }
 
 export { useLocalStorage };
