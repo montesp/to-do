@@ -1,7 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import { TodoContext } from "@/app/context/TodoContext";
+import React, { useContext, useState } from "react";
 
-function TodoSearch({ searchValue, setSearchValue }) {
+function TodoSearch() {
+  const { searchValue, setSearchValue } = useContext(TodoContext);
+
   const changeSearch = (e) => {
     setSearchValue(e.target.value);
   };

@@ -4,10 +4,11 @@ import { TodoItem } from "@/app/components/TodoItem/TodoItem";
 import { TodoList } from "@/app/components/TodoList/TodoList";
 import { TodoSearch } from "@/app/components/TodoSearch/TodoSearch";
 import { TodoTitle } from "@/app/components/TodoTitle/TodoTitle";
+import { TodoContext } from "@/app/context/TodoContext";
 import { useLocalStorage } from "@/app/hooks/useLocalStorage";
 import { Error } from "@/app/states/Error/Error";
 import { Loading } from "@/app/states/Loading/Loading";
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 
 function TodosPage() {
   const [searchValue, setSearchValue] = useState("");
@@ -19,6 +20,7 @@ function TodosPage() {
     loading,
     error,
   } = useLocalStorage("TODOS_V1", []);
+
   const searchedTodos = todos.filter(
     (todo) =>
       todo.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -29,9 +31,18 @@ function TodosPage() {
   ).length;
   const totalTodos = searchedTodos.length;
   return (
-    <>
-      <TodoTitle completed={completedTodos} total={totalTodos} />
-      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+    <TodoContext.Provider
+      value={{
+        completeTodo,
+        deleteTodo,
+        completedTodos,
+        totalTodos,
+        searchValue,
+        setSearchValue,
+      }}
+    >
+      <TodoTitle />
+      <TodoSearch />
       {completedTodos === totalTodos && totalTodos !== 0 && !error && (
         <p className="text-xl font-medium mb-2">Todos are completed</p>
       )}
@@ -49,14 +60,12 @@ function TodosPage() {
               text={todo.text}
               title={todo.title}
               completed={todo.completed}
-              onCompleted={completeTodo}
-              onDeleted={deleteTodo}
             />
           ))
         )}
       </TodoList>
       <CreateTodoButton />
-    </>
+    </TodoContext.Provider>
   );
 }
 
