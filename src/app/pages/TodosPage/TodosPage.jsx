@@ -8,11 +8,14 @@ import { TodoContext } from "@/app/context/TodoContext";
 import { useLocalStorage } from "@/app/hooks/useLocalStorage";
 import { Empty } from "@/app/states/Empty/Empty";
 import { Error } from "@/app/states/Error/Error";
+import { createPortal } from "react-dom";
 import { Loading } from "@/app/states/Loading/Loading";
 import React, { createContext, useContext, useState } from "react";
+import { CreateTodoModal } from "@/app/components/CreateTodoModal/CreateTodoModal";
 
 function TodosPage() {
-  const { totalTodos, error, loading, searchedTodos } = useContext(TodoContext);
+  const { totalTodos, error, loading, searchedTodos, isShowing } =
+    useContext(TodoContext);
   return (
     <>
       <TodoTitle />
@@ -32,6 +35,8 @@ function TodosPage() {
         ))}
       </TodoList>
       <CreateTodoButton />
+
+      {isShowing && createPortal(<CreateTodoModal />, document.body)}
     </>
   );
 }

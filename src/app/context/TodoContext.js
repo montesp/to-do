@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useModal } from "../hooks/useModal";
 
 const TodoContext = createContext(null);
 
@@ -13,6 +14,8 @@ function TodoContextProvider({ children }) {
     loading,
     error,
   } = useLocalStorage("TODOS_V1", []);
+
+  const { isShowing, toggle } = useModal();
 
   const searchedTodos = todos.filter(
     (todo) =>
@@ -37,6 +40,8 @@ function TodoContextProvider({ children }) {
         searchedTodos,
         totalTodos,
         completedTodos,
+        isShowing,
+        toggle,
       }}
     >
       {children}
