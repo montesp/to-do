@@ -14,7 +14,7 @@ import React, { createContext, useContext, useState } from "react";
 import { CreateTodoModal } from "@/app/components/CreateTodoModal/CreateTodoModal";
 
 function TodosPage() {
-  const { totalTodos, error, loading, searchedTodos, isShowing } =
+  const { totalTodos, error, loading, searchedTodos, isShowingModal } =
     useContext(TodoContext);
   return (
     <>
@@ -36,7 +36,7 @@ function TodosPage() {
       </TodoList>
       <CreateTodoButton />
 
-      {isShowing && createPortal(<CreateTodoModal />, document.body)}
+      {isShowingModal && createPortal(<CreateTodoModal />, document.body)}
     </>
   );
 }
