@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
-// const defaultTodos = [
-//   { title: "Cooking", text: "Cook dinner", completed: true },
-//   { title: "Study", text: "Complete react courses", completed: true },
-//   { title: "Buy", text: "Buy furniture for kitchen", completed: false },
-//   { title: "Eat", text: "Eat healtly", completed: false },
-//   { title: "title", text: "Study", completed: true },
-// ];
 
 function useLocalStorage(itemName, initialValue) {
-  // localStorage.setItem("TODOS_V1", JSON.stringify(defaultTodos));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState(initialValue);
@@ -55,7 +47,21 @@ function useLocalStorage(itemName, initialValue) {
     saveItems(newItems);
   };
 
-  return { items, saveItems, completeItem, deleteItem, loading, error };
+  const createItem = (title, text) => {
+    const newItem = { title, text, completed: false };
+    const newItems = [...items, newItem];
+    saveItems(newItems);
+  };
+
+  return {
+    items,
+    saveItems,
+    completeItem,
+    deleteItem,
+    createItem,
+    loading,
+    error,
+  };
 }
 
 export { useLocalStorage };

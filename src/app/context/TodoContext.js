@@ -11,6 +11,7 @@ function TodoContextProvider({ children }) {
     saveItems: saveTodos,
     completeItem: completeTodo,
     deleteItem: deleteTodo,
+    createItem: createTodo,
     loading,
     error,
   } = useLocalStorage("TODOS_V1", []);
@@ -42,6 +43,7 @@ function TodoContextProvider({ children }) {
         completedTodos,
         isShowing,
         toggle,
+        createTodo,
       }}
     >
       {children}
