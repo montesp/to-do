@@ -24,3 +24,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
+.background-modal {
+  background-color: rgba(#B0BEC5, 0.3);
+}
